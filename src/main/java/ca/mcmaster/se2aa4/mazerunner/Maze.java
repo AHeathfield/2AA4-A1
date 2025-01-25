@@ -14,10 +14,11 @@ import org.apache.logging.log4j.Logger;
 public class Maze {
     private static final Logger logger = LogManager.getLogger();
     private HashMap<String, String> maze = new HashMap<>();
-    private String entryPos;
+    private String entryPos;    // (column,row) = (x,y)
     private String exitPos;
     private int totalRows;
     private int totalCols;
+    
     
 
     public Maze(String filePath) {
@@ -36,17 +37,17 @@ public class Maze {
             String pos;
             while ((line = reader.readLine()) != null) {
                 for (int col = 0; col < line.length(); col++) {
-                    pos = row + "," + col;
+                    pos = col + "," + row;
                     if (line.charAt(col) == '#') {
                         this.maze.put(pos, "#");
                     } 
                     else if (line.charAt(col) == ' ') {
                         if (col == 0) {
-                            logger.info("**** Found entrance.");
+                            logger.info("**** Entrance (EAST) position (x,y): {}", pos);
                             this.entryPos = pos;
                         }
                         else if( col == line.length() - 1) {
-                            logger.info("**** Found exit.");
+                            logger.info("**** Exit (WEST) position (x,y): {}", pos);
                             this.exitPos = pos;
                         }
                         this.maze.put(pos, " ");
@@ -65,7 +66,6 @@ public class Maze {
         }
     }
 
-
     public HashMap<String, String> getMazeMap() {
         return this.maze;
     }
@@ -78,13 +78,25 @@ public class Maze {
         return this.exitPos;
     }
 
+    public int getTotalRows() {
+        return this.totalRows;
+    }
+
+    public int getTotalCols() {
+        return this.totalCols;
+    }
+
+    public boolean isWallAtPosition(String position) {
+        return this.maze.get(position).equals("#");
+    }
+
 
     public void testDisplay() {
         int row, col;
         String pos;
         for (row = 0; row < totalRows; row++) {
             for (col = 0; col < totalCols; col++) {
-                pos = row + "," + col;
+                pos = col + "," + row;
                 System.out.print(this.maze.get(pos) + " ");
             }
             System.err.println();

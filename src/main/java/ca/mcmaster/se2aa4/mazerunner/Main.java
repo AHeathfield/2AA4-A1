@@ -20,20 +20,24 @@ public class Main {
         // System.out.println("** Starting Maze Runner");
         logger.info("** Starting Maze Runner");
         try {
-            System.out.println(ioManager.getFilePath());
-            System.out.println(ioManager.getUserPath());
+            // System.out.println(ioManager.getFilePath());
+            // System.out.println(ioManager.getUserPath());
 
             Maze maze = new Maze(ioManager.getFilePath());
-            maze.testDisplay();
-            System.out.println("Entry: " + maze.getEntryPos());
-            System.out.println("Exit: " + maze.getExitPos());
+            // maze.testDisplay();
+            // logger.info("Entry: {}", maze.getEntryPos());
+            // logger.info("Exit: {}", maze.getExitPos());
+
+            // logger.info("**** Computing path");
+            Path path = new Path(maze);
+            System.out.println("PATH: " + path.getPath());
             
         } catch(Exception e) {
             System.err.println("/!\\ An error has occured /!\\");
         }
   
-        logger.info("**** Computing path");
-        logger.info("PATH NOT COMPUTED");
+        
+        // logger.info("PATH NOT COMPUTED");
         logger.info("** End of MazeRunner");
     }
 }
