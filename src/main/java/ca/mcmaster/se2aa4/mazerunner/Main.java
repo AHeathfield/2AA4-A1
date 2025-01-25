@@ -22,6 +22,11 @@ public class Main {
         try {
             System.out.println(ioManager.getFilePath());
             System.out.println(ioManager.getUserPath());
+
+            Maze maze = new Maze(ioManager.getFilePath());
+            maze.testDisplay();
+            System.out.println("Entry: " + maze.getEntryPos());
+            System.out.println("Exit: " + maze.getExitPos());
             
         } catch(Exception e) {
             System.err.println("/!\\ An error has occured /!\\");
