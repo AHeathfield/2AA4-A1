@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-public class RectangleMaze {
+public class RectangleMaze implements Maze<Position, String> {
     private static final Logger logger = LogManager.getLogger();
     private HashMap<Position, String> maze = new HashMap<>();
     private Position entryPos;
@@ -64,15 +64,17 @@ public class RectangleMaze {
     }
 
 
-    // Might get rid
+    @Override
     public HashMap<Position, String> getMazeMap() {
         return this.maze;
     }
 
+    @Override
     public Position getEntryPos() {
         return this.entryPos;
     }
 
+    @Override
     public Position getExitPos() {
         return this.exitPos;
     }
