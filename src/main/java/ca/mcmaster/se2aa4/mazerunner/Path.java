@@ -23,7 +23,7 @@ public class Path {
     private static final Logger logger = LogManager.getLogger();
     private int currentAngle = 0;   // This is used to calculate the currentDir
     private Direction currentDir;
-    private String currentPos;
+    private Position currentPos;
     private ArrayList<Instruction> instructHistory = new ArrayList<>();
     private Maze maze;
     private boolean possible = true;
@@ -52,17 +52,21 @@ public class Path {
         boolean pathNotFound = true;
         logger.info("**** Computing path");
         while (this.possible && pathNotFound) {
-            // logger.info("Pos: {}", this.currentPos);
-            
+            // logger.info("Pos: ({}, {})", this.currentPos.x, this.currentPos.y);
+            // logger.info("Current Angle: {}", this.currentAngle);
+
             // First move in the maze will always be forward to enter the maze
             if (this.moves == 0 && isWallInFront()) {
+                // logger.info("There's a wall in front");
                 this.possible = false;
                 continue; // Could just break
             }
             else if (this.moves == 0) {
+                // logger.info("Doing instruction");
                 doInstruction(Instruction.FORWARD);
                 continue;
             }
+            // logger.info("TEST");
 
             // This checks to see if the maze is possible or if the maze has been solved
             if (this.currentPos.equals(maze.getEntryPos())) {
@@ -72,7 +76,7 @@ public class Path {
             }
             // SOLVED!!!
             else if (this.currentPos.equals(maze.getExitPos())) {
-                logger.info("Final position (x,y): {}", this.currentPos);
+                logger.info("Final position (x,y): ({}, {})", this.currentPos.x, this.currentPos.y);
                 pathNotFound = false;
                 continue; // Could just break
             }
@@ -188,47 +192,43 @@ public class Path {
 
     // Moves the currentPos of the runner based on the direction they were facing
     // Called when the Instruction is FORWARD
-    private String getNewPosition(String position, Direction direction) {
-        String[] pos = position.split("[,]");
-        int posX = Integer.parseInt(pos[0]);
-        int posY = Integer.parseInt(pos[1]);
-
+    private Position getNewPosition(Position position, Direction direction) {
+        Position pos = position.deepCopy();
         switch (direction) {
-            case UP:
-                posY -= 1;
+            case Direction.UP:
+                pos.y -= 1;
                 break;
-            case DOWN:
-                posY += 1;
+            case Direction.DOWN:
+                pos.y += 1;
                 break;
-            case RIGHT:
-                posX += 1;
+            case Direction.RIGHT:
+                pos.x += 1;
                 break;
-            case LEFT:
-                posX -= 1;
+            case Direction.LEFT:
+                pos.x -= 1;
                 break;
             default:
                 break;
         }
-
-        return posX + "," + posY;    // Updates the currentPos after moving forward
+        return pos;
     }
 
     
     // Checks to see if there's a wall to the right IF THEY WERE TO MOVE FORWARD
     private boolean isWallToRight() {
-        String runnerPosForward = getNewPosition(this.currentPos, this.currentDir);
+        Position runnerPosForward = getNewPosition(this.currentPos, this.currentDir);
 
         int angleToRight = getNewAngle(Instruction.RIGHT);
         Direction playerRight = Direction.convertAngleToDir(angleToRight);
-        String posToRight = getNewPosition(runnerPosForward, playerRight);
+        Position posToRight = getNewPosition(runnerPosForward, playerRight);
 
         return this.maze.isWallAtPosition(posToRight);
     }
 
     // Checks to see if there's a wall in front of runner CURRENT POS
     private boolean isWallInFront() {
-        String posInFront = getNewPosition(this.currentPos, this.currentDir);
-        // logger.info("Front Pos: {}", posInFront);
+        Position posInFront = getNewPosition(this.currentPos, this.currentDir);
+        // logger.info("Front Pos: ({}, {})", posInFront.x, posInFront.y);
         return this.maze.isWallAtPosition(posInFront);
     }
 

@@ -11,6 +11,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+// To test run: java -jar target/mazerunner.jar -i ./examples/small.maz.txt
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
@@ -33,7 +34,7 @@ public class Main {
             System.out.println("PATH: " + path.getPath());
             
         } catch(Exception e) {
-            System.err.println("/!\\ An error has occured /!\\");
+            System.err.println(e);
         }
   
         

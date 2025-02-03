@@ -13,11 +13,11 @@ import org.apache.logging.log4j.Logger;
  */
 public class Maze {
     private static final Logger logger = LogManager.getLogger();
-    private HashMap<String, String> maze = new HashMap<>();
-    private String entryPos;    // (column,row) = (x,y)
-    private String exitPos;
-    private int totalRows;
-    private int totalCols;
+    private HashMap<Position, String> maze = new HashMap<>();
+    private Position entryPos;    // (xumn,y) = (x,y)
+    private Position exitPos;
+    private int sizeY;
+    private int sizeX;
     
     
 
@@ -33,30 +33,30 @@ public class Maze {
             logger.info("**** Reading the maze from file {}", filePath);
 
             // Reads file and Hashmap
-            int row = 0;
-            String pos;
+            int y = 0;
+            int x = 0;
             while ((line = reader.readLine()) != null) {
-                for (int col = 0; col < line.length(); col++) {
-                    pos = col + "," + row;
-                    if (line.charAt(col) == '#') {
+                for (x = 0; x < line.length(); x++) {
+                    Position pos = new Position(x, y);
+                    if (line.charAt(x) == '#') {
                         this.maze.put(pos, "#");
                     } 
-                    else if (line.charAt(col) == ' ') {
-                        if (col == 0) {
-                            logger.info("**** Entrance (EAST) position (x,y): {}", pos);
+                    else if (line.charAt(x) == ' ') {
+                        if (x == 0) {
+                            logger.info("**** Entrance (EAST) position (x,y): ({},{})", pos.x, pos.y);
                             this.entryPos = pos;
                         }
-                        else if( col == line.length() - 1) {
-                            logger.info("**** Exit (WEST) position (x,y): {}", pos);
+                        else if( x == line.length() - 1) {
+                            logger.info("**** Exit (WEST) position (x,y): ({},{})", pos.x, pos.y);
                             this.exitPos = pos;
                         }
                         this.maze.put(pos, " ");
                     }
                 }
-                row++;
-                this.totalCols = line.length();
+                y++;
+                this.sizeX = line.length();
             }
-            this.totalRows = row;
+            this.sizeY = y;
 
             reader.close();
             logger.info("**** Successfully read maze.");
@@ -66,37 +66,31 @@ public class Maze {
         }
     }
 
-    public HashMap<String, String> getMazeMap() {
+
+    // Might get rid
+    public HashMap<Position, String> getMazeMap() {
         return this.maze;
     }
 
-    public String getEntryPos() {
+    public Position getEntryPos() {
         return this.entryPos;
     }
 
-    public String getExitPos() {
+    public Position getExitPos() {
         return this.exitPos;
     }
 
-    public int getTotalRows() {
-        return this.totalRows;
-    }
 
-    public int getTotalCols() {
-        return this.totalCols;
-    }
-
-    public boolean isWallAtPosition(String position) {
+    public boolean isWallAtPosition(Position position) {        
         return this.maze.get(position).equals("#");
     }
 
 
     public void testDisplay() {
-        int row, col;
-        String pos;
-        for (row = 0; row < totalRows; row++) {
-            for (col = 0; col < totalCols; col++) {
-                pos = col + "," + row;
+        int y, x;
+        Position pos = new Position();
+        for (y = 0; y < sizeY; y++) {
+            for (x = 0; x < sizeX; x++) {
                 System.out.print(this.maze.get(pos) + " ");
             }
             System.err.println();
