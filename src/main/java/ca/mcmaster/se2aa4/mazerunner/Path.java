@@ -25,13 +25,13 @@ public class Path {
     private Direction currentDir;
     private Position currentPos;
     private ArrayList<Instruction> instructHistory = new ArrayList<>();
-    private Maze maze;
+    private RectangleMaze maze;
     private boolean possible = true;
     private String path = "";
     private int moves = 0;
 
     // Contructor
-    public Path(Maze maze) {
+    public Path(RectangleMaze maze) {
         this.maze = maze;
         this.currentPos = maze.getEntryPos();   // "x,y"
         this.setupStartDirection();

@@ -24,7 +24,7 @@ public class Main {
             // System.out.println(ioManager.getFilePath());
             // System.out.println(ioManager.getUserPath());
 
-            Maze maze = new Maze(ioManager.getFilePath());
+            RectangleMaze maze = new RectangleMaze(ioManager.getFilePath());
             // maze.testDisplay();
             // logger.info("Entry: {}", maze.getEntryPos());
             // logger.info("Exit: {}", maze.getExitPos());
