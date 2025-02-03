@@ -9,17 +9,17 @@ import org.apache.logging.log4j.Logger;
  * This will find the path to the maze and create the displaay option
  */
 public class Path {
-    private enum Instruction {
-        FORWARD,
-        RIGHT,
-        LEFT
-    }
-    private enum Direction {
-        UP,
-        RIGHT,
-        LEFT,
-        DOWN
-    }
+    // private enum Instruction {
+    //     FORWARD,
+    //     RIGHT,
+    //     LEFT
+    // }
+    // private enum Direction {
+    //     UP,
+    //     RIGHT,
+    //     LEFT,
+    //     DOWN
+    // }
     private static final Logger logger = LogManager.getLogger();
     private int currentAngle = 0;   // This is used to calculate the currentDir
     private Direction currentDir;
@@ -36,10 +36,10 @@ public class Path {
         this.currentPos = maze.getEntryPos();   // "x,y"
         this.setupStartDirection();
         // These are dummies
-        this.instructHistory.add(Instruction.FORWARD);
-        this.instructHistory.add(Instruction.FORWARD);
-        this.instructHistory.add(Instruction.FORWARD);
-        this.instructHistory.add(Instruction.FORWARD);
+        // this.instructHistory.add(Instruction.FORWARD);
+        // this.instructHistory.add(Instruction.FORWARD);
+        // this.instructHistory.add(Instruction.FORWARD);
+        // this.instructHistory.add(Instruction.FORWARD);
         findPath();
     }
 
@@ -148,7 +148,7 @@ public class Path {
     // Updates runner values (pos, dir)
     private void updateRunner(Instruction instruction) {
         this.currentAngle = getNewAngle(instruction);   // Needed to update direciton
-        this.currentDir = getNewDirection(this.currentAngle);
+        this.currentDir = Direction.convertAngleToDir(this.currentAngle);
 
         // Position only changes when instruction to runner is move FORWARD
         if (instruction == Instruction.FORWARD) {
@@ -170,21 +170,21 @@ public class Path {
         }
     }
 
-    // This updates the direction based on the currentAngle (more readable)
-    private Direction getNewDirection(int angle) {
-        switch (angle) {
-            case 0:
-                return Direction.RIGHT;
-            case 90:
-                return Direction.UP;
-            case 180:
-                return Direction.LEFT;
-            case 270:
-                return Direction.DOWN;
-            default:
-                return this.currentDir;
-        }
-    }
+    // This returns a Direction based on an angle
+    // private Direction getNewDirection(int angle) {
+    //     switch (angle) {
+    //         case 0:
+    //             return Direction.RIGHT;
+    //         case 90:
+    //             return Direction.UP;
+    //         case 180:
+    //             return Direction.LEFT;
+    //         case 270:
+    //             return Direction.DOWN;
+    //         default:
+    //             return this.currentDir;
+    //     }
+    // }
 
     // Moves the currentPos of the runner based on the direction they were facing
     // Called when the Instruction is FORWARD
@@ -219,7 +219,7 @@ public class Path {
         String runnerPosForward = getNewPosition(this.currentPos, this.currentDir);
 
         int angleToRight = getNewAngle(Instruction.RIGHT);
-        Direction playerRight = getNewDirection(angleToRight);
+        Direction playerRight = Direction.convertAngleToDir(angleToRight);
         String posToRight = getNewPosition(runnerPosForward, playerRight);
 
         return this.maze.isWallAtPosition(posToRight);
