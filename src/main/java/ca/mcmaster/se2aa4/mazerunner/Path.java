@@ -41,6 +41,25 @@ public class Path {
     }
 
 
+    public String getCanonicalPath() {
+        if (this.path == null || this.path.isEmpty()) {
+            return "";
+        }
+        
+        StringBuilder formatted = new StringBuilder();
+        formatted.append(this.path.charAt(0));
+        
+        for (int i = 1; i < this.path.length(); i++) {
+            if (this.path.charAt(i) != this.path.charAt(i - 1)) {
+                formatted.append(" ");
+            }
+            formatted.append(this.path.charAt(i));
+        }
+        
+        return formatted.toString();
+    }
+
+
     // Adds instruction to path
     private void logInstruction(Instruction instruction) {
         switch(instruction) {

@@ -34,6 +34,7 @@ public class Main {
                 }
                 System.out.println("Runner path: " + path.getPath());
             }
+            System.out.println("Runner path canoncial: " + path.getCanonicalPath());
 
         } catch(Exception e) {
             System.err.println(e);
