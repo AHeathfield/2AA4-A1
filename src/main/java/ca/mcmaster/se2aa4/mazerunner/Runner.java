@@ -6,11 +6,11 @@ package ca.mcmaster.se2aa4.mazerunner;
  * It must include a "Direction" and "Instruction" type, (implementations may vary)
  */
 interface Runner<D, I> {
-    public D getCurrentDirection();
-    public void setCurrentDirection(D direction);
+    public D getDirection();
+    public void setDirection(D direction);
 
-    public Position getCurrentPosition();
-    public void setCurrentPosition(Position position);
+    public Position getPosition();
+    public void setPosition(Position position);
 
     public void doInstruction(I instruciton);
 }

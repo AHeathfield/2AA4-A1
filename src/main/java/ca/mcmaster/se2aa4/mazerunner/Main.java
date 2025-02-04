@@ -33,6 +33,7 @@ public class Main {
             Path path = new Path(maze);
             System.out.println("PATH: " + path.getPath());
             
+            
         } catch(Exception e) {
             System.err.println(e);
         }
