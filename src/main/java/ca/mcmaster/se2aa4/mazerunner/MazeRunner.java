@@ -18,11 +18,19 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
 
     // Constructor
-    public MazeRunner(Position position, Direction direction, Maze<Position, String> maze) {
-        this.currentPos = position.deepCopy();
-        this.currentDir = direction;
+    public MazeRunner(Maze<Position, String> maze) {
         this.maze = maze;
+        setUpRunner();
     }
+
+
+    // This is to test the user path to see if it's valid or not
+    // public boolean testPath(ArrayList<Instruction> instructions) {
+        
+    //     for (Instruction instuction : instructions) {
+    //         if (isWallInFront() && )
+    //     }
+    // }
 
 
     // Runner explores Maze and reports back the exact path they took
@@ -190,5 +198,13 @@ public class MazeRunner implements Runner<Direction, Instruction> {
         Position posToRight = getForwardPos(runnerPosForward, playerRight);
 
         return this.maze.isWallAtPos(posToRight);
+    }
+
+
+    // Sets up runner, if we need to start from the west side, we can solve the maze normally and just flip the path
+    private void setUpRunner() {
+        Position entry = this.maze.getEntryPos();
+        this.currentPos = entry.deepCopy();
+        this.currentDir = Direction.RIGHT;
     }
 }

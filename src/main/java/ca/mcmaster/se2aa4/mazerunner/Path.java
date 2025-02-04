@@ -11,14 +11,19 @@ import org.apache.logging.log4j.Logger;
 public class Path {
     private static final Logger logger = LogManager.getLogger();
     private MazeRunner runner;
-    // private RectangleMaze maze;
     private String path;
 
-    // Contructor
+    // Contructors
     public Path(RectangleMaze maze) {
         // this.maze = maze;
-        setUpRunner(maze);
+        // setUpRunner(maze);
+        this.runner = new MazeRunner(maze);
         retrievePath(); // Gets path that runner took
+    }
+
+    public Path(RectangleMaze maze, String userPath) {
+        // setUpRunner(maze);
+
     }
 
 
@@ -53,20 +58,5 @@ public class Path {
 
     public String getPath() {
         return path;
-    }
-
-
-    // Determines starting direction (depends if starting on west or east side)
-    private void setUpRunner(Maze<Position, String> maze) {
-        Position entry = maze.getEntryPos();
-
-        if (entry.x == 0) {
-            logger.info("Starting at EAST SIDE");
-            this.runner = new MazeRunner(maze.getEntryPos(), Direction.RIGHT, maze);
-        }
-        else {
-            logger.info("Starting at WEST SIDE");
-            this.runner = new MazeRunner(maze.getEntryPos(), Direction.LEFT, maze);
-        }
     }
 }
