@@ -50,28 +50,20 @@ public class MazeRunner implements Runner<Direction, Instruction> {
     public ArrayList<Instruction> exploreMaze() {
         this.currentAngle = Direction.convertDirToAngle(this.currentDir);
         this.currentPath.clear();
-        //logger.info("**** Computing path");
+        logger.info("**** Computing path");
 
         while (true) {
-            // logger.info("Pos: ({}, {})", this.currentPos.x, this.currentPos.y);
-            // logger.info("Current Angle: {}", this.currentAngle);
             // First move in the maze will always be forward to enter the maze
             if (this.currentPath.isEmpty() && isWallInFront()) {
                 break;
             }
             else if (this.currentPath.isEmpty()) {
                 doInstruction(Instruction.FORWARD);
-                if (currentDir == Direction.RIGHT) {
-                    logger.info("FACING RIGHT");
-                }
-                logger.info("Pos: ({}, {})", this.currentPos.x, this.currentPos.y);
             }
 
 
             // This checks to see if the maze is possible or if the maze has been solved
             if (this.currentPos.equals(this.maze.getEntryPos())) {
-                logger.info("TEST");
-                logger.info("Pos: ({}, {})", this.currentPos.x, this.currentPos.y);
                 this.currentPath.clear();   // Empty path indicates impossible maze
                 break;
             }
@@ -96,20 +88,17 @@ public class MazeRunner implements Runner<Direction, Instruction> {
         ArrayList<Instruction> instructions = new ArrayList<>();
 
         if (isWallInFront()) {
-            // logger.info("There's a wall in front of pos: {},{} angle: {}", currentPos.x, currentPos.y, currentAngle);
             instructions.add(Instruction.LEFT);
         }
         else {
             
             if (isWallToRight()) {
-                // logger.info("Should move forward.");
                 instructions.add(Instruction.FORWARD);
             }
             // Idea is you move forward and then turn RIGHT since there will be no wall
             // to your right, if we turn LEFT it gives the opportunity of just looping
             // back and forth.
             else {
-                // //logger.info("Should move forward then turn right.");
                 instructions.add(Instruction.FORWARD);
                 instructions.add(Instruction.RIGHT);
             }
@@ -145,7 +134,6 @@ public class MazeRunner implements Runner<Direction, Instruction> {
     @Override
     public void doInstruction(Instruction instruction) {
         this.currentAngle = getNewAngle(instruction);   // Needed to update direciton
-        // this.currentDir = getNewDirection(this.currentAngle);
         this.currentDir = Direction.convertAngleToDir(this.currentAngle);
 
         // Position only changes when instruction to runner is move FORWARD

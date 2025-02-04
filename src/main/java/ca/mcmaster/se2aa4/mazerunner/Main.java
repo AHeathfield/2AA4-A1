@@ -10,14 +10,10 @@ public class Main {
 
     public static void main(String[] args) {
         InputManager inputManager = new InputManager(args);
-        // System.out.println("** Starting Maze Runner");
         logger.info("** Starting Maze Runner");
         try {
-            // System.out.println(ioManager.getFilePath());
-            // System.out.println(ioManager.getUserPath());
 
             RectangleMaze maze = new RectangleMaze(inputManager.getFilePath());
-            // maze.testDisplay();
 
             Path path = new Path(maze);
             String userPath = inputManager.getUserPath();
@@ -41,8 +37,6 @@ public class Main {
             System.err.println(e);
         }
   
-        
-        // logger.info("PATH NOT COMPUTED");
         logger.info("** End of MazeRunner");
     }
 }
