@@ -11,13 +11,13 @@ import org.apache.logging.log4j.Logger;
 public class Path {
     private static final Logger logger = LogManager.getLogger();
     private MazeRunner runner;
-    private RectangleMaze maze;
+    // private RectangleMaze maze;
     private String path;
 
     // Contructor
     public Path(RectangleMaze maze) {
-        this.maze = maze;
-        setUpRunner();
+        // this.maze = maze;
+        setUpRunner(maze);
         retrievePath(); // Gets path that runner took
     }
 
@@ -25,7 +25,7 @@ public class Path {
     // Retrieves all the instructions the runner did and converts it to a string
     public void retrievePath() {
         path = "";
-        ArrayList<Instruction> runnerPath = this.runner.exploreMaze(this.maze);
+        ArrayList<Instruction> runnerPath = this.runner.exploreMaze();
         logger.info("Array size: {}", runnerPath.size());
         for (Instruction instruction : runnerPath) {
             logInstruction(instruction);
@@ -57,16 +57,16 @@ public class Path {
 
 
     // Determines starting direction (depends if starting on west or east side)
-    private void setUpRunner() {
-        Position entry = this.maze.getEntryPos();
+    private void setUpRunner(Maze<Position, String> maze) {
+        Position entry = maze.getEntryPos();
 
         if (entry.x == 0) {
             logger.info("Starting at EAST SIDE");
-            this.runner = new MazeRunner(this.maze.getEntryPos(), Direction.RIGHT);
+            this.runner = new MazeRunner(maze.getEntryPos(), Direction.RIGHT, maze);
         }
         else {
             logger.info("Starting at WEST SIDE");
-            this.runner = new MazeRunner(this.maze.getEntryPos(), Direction.LEFT);
+            this.runner = new MazeRunner(maze.getEntryPos(), Direction.LEFT, maze);
         }
     }
 }

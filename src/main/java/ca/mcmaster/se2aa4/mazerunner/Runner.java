@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import java.util.ArrayList;
 
 /*
  * The runner interface defines methods that all runners must have.
@@ -13,4 +14,6 @@ interface Runner<D, I> {
     public void setPosition(Position position);
 
     public void doInstruction(I instruciton);
+
+    public ArrayList<I> exploreMaze();
 }
