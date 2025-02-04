@@ -60,6 +60,34 @@ public class Path {
     }
 
 
+    public String getFactorizedPath() {
+        if (this.path == null || this.path.isEmpty()) {
+            return "";
+        }
+        
+        StringBuilder formatted = new StringBuilder();
+        int count = 1;
+        
+        for (int i = 1; i < this.path.length(); i++) {
+            if (this.path.charAt(i) == this.path.charAt(i - 1)) {
+                count++;
+            } else {
+                if (count > 1) {
+                    formatted.append(count);
+                }
+                formatted.append(this.path.charAt(i - 1)).append(" ");
+                count = 1;
+            }
+        }
+        if (count > 1) {
+            formatted.append(count);
+        }
+        formatted.append(this.path.charAt(this.path.length() - 1));
+        
+        return formatted.toString();
+    }
+
+
     // Adds instruction to path
     private void logInstruction(Instruction instruction) {
         switch(instruction) {
