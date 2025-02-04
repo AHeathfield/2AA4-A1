@@ -12,8 +12,8 @@ import org.apache.logging.log4j.Logger;
  */
 public class InputManager {
     private static final Logger logger = LogManager.getLogger();
-    private String filePath = "null";
-    private String userPath = "null";
+    private String filePath;
+    private String userPath;
 
     // Constructor
     public InputManager(String[] args)

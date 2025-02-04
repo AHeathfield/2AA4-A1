@@ -18,14 +18,23 @@ public class Main {
 
             RectangleMaze maze = new RectangleMaze(inputManager.getFilePath());
             // maze.testDisplay();
-            // logger.info("Entry: {}", maze.getEntryPos());
-            // logger.info("Exit: {}", maze.getExitPos());
 
-            // logger.info("**** Computing path");
             Path path = new Path(maze);
-            System.out.println("PATH: " + path.getPath());
+            String userPath = inputManager.getUserPath();
+            if (userPath == null) {
+                System.out.println("Runner path: " + path.getPath());
+            }
+            else {
+                logger.info("Before");
+                if (path.isPathValid(userPath)) {
+                    System.out.println("User path given solves maze!");
+                }
+                else {
+                    System.out.println("User path given does not solve maze!");
+                }
+                System.out.println("Runner path: " + path.getPath());
+            }
 
-            
         } catch(Exception e) {
             System.err.println(e);
         }

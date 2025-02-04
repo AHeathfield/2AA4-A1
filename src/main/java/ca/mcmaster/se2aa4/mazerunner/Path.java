@@ -13,17 +13,10 @@ public class Path {
     private MazeRunner runner;
     private String path;
 
-    // Contructors
+    // Contructor
     public Path(RectangleMaze maze) {
-        // this.maze = maze;
-        // setUpRunner(maze);
         this.runner = new MazeRunner(maze);
         retrievePath(); // Gets path that runner took
-    }
-
-    public Path(RectangleMaze maze, String userPath) {
-        // setUpRunner(maze);
-
     }
 
 
@@ -35,6 +28,16 @@ public class Path {
         for (Instruction instruction : runnerPath) {
             logInstruction(instruction);
         }
+    }
+
+
+    // See's if user inputted path is valid
+    public boolean isPathValid(String aPath) {
+        ArrayList<Instruction> instructions = convertPathToInstructions(aPath);
+        logger.info("path converted");
+        boolean valid = this.runner.testPath(instructions);
+        logger.info("path validity checked");
+        return valid;
     }
 
 
@@ -53,6 +56,31 @@ public class Path {
             default:
                 break;
         }
+    }
+
+
+    // Gets the instruciton corresponding with letter
+    private Instruction getInstruction(char letter) {
+        switch(letter) {
+            case 'F':
+                return Instruction.FORWARD;
+            case 'R':
+                return Instruction.RIGHT;
+            case 'L':
+                return Instruction.LEFT;
+            default:
+                throw new IllegalArgumentException("Path must only consist of letters 'F', 'R', or 'L'.");
+        }
+    }
+
+
+    // Converts a path to list of instructions
+    private ArrayList<Instruction> convertPathToInstructions(String aPath) {
+        ArrayList<Instruction> userInstructions = new ArrayList<>();
+        for (int i = 0; i < aPath.length(); i++) {
+            userInstructions.add(getInstruction(aPath.charAt(i)));
+        }
+        return userInstructions;
     }
 
 

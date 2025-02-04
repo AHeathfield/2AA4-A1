@@ -81,8 +81,11 @@ public class RectangleMaze implements Maze<Position, String> {
 
 
     @Override
-    public boolean isWallAtPos(Position position) {        
-        return this.maze.get(position).equals("#");
+    public boolean isWallAtPos(Position position) {      
+        if (this.maze.containsKey(position)) {
+            return this.maze.get(position).equals("#");
+        }
+        return false;
     }
 
 

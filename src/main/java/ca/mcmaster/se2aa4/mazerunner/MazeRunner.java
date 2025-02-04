@@ -25,12 +25,25 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
 
     // This is to test the user path to see if it's valid or not
-    // public boolean testPath(ArrayList<Instruction> instructions) {
-        
-    //     for (Instruction instuction : instructions) {
-    //         if (isWallInFront() && )
-    //     }
-    // }
+    public boolean testPath(ArrayList<Instruction> instructions) {
+        this.currentPath.clear();
+        setUpRunner();
+        for (Instruction instruction : instructions) {
+            if (isWallInFront() &&  instruction == Instruction.FORWARD) {
+                return false;
+            }
+            else {
+                doInstruction(instruction);
+            }
+        }
+
+        if (this.currentPos.equals(this.maze.getExitPos())) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 
     // Runner explores Maze and reports back the exact path they took
