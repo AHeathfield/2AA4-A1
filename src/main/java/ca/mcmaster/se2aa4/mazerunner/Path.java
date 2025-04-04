@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class Path {
     private static final Logger logger = LogManager.getLogger();
-    private MazeRunner runner;
+    private Runner<Direction, Instruction> runner;
     private String path;
 
     // Contructor
