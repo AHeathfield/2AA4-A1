@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,7 @@ public class MazeRunner implements Runner<Direction, Instruction> {
     private Position currentPos;
     private Direction currentDir;
     private int currentAngle;
-    private ArrayList<Instruction> currentPath = new ArrayList<>();    // Maybe have the Path control the path
+    private List<Instruction> currentPath = new ArrayList<>();    // Maybe have the Path control the path
 
 
     // Constructor
@@ -25,7 +26,7 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
 
     // This is to test the user path to see if it's valid or not
-    public boolean testPath(ArrayList<Instruction> instructions) {
+    public boolean testPath(List<Instruction> instructions) {
         this.currentPath.clear();
         setUpRunner();
         for (Instruction instruction : instructions) {
@@ -47,7 +48,7 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
 
     // Runner explores Maze and reports back the exact path they took
-    public ArrayList<Instruction> exploreMaze() {
+    public List<Instruction> exploreMaze() {
         this.currentAngle = Direction.convertDirToAngle(this.currentDir);
         this.currentPath.clear();
         logger.info("**** Computing path");

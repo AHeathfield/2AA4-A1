@@ -1,5 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +24,7 @@ public class Path {
     // Retrieves all the instructions the runner did and converts it to a string
     public void retrievePath() {
         path = "";
-        ArrayList<Instruction> runnerPath = this.runner.exploreMaze();
+        List<Instruction> runnerPath = this.runner.exploreMaze();
         logger.info("Array size: {}", runnerPath.size());
         for (Instruction instruction : runnerPath) {
             logInstruction(instruction);
