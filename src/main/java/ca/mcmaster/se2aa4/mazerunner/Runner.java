@@ -16,4 +16,5 @@ interface Runner<D, I> {
     public void doInstruction(I instruciton);
 
     public List<I> exploreMaze();
+    public boolean testPath(List<I> instructions);
 }

@@ -26,6 +26,7 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
 
     // This is to test the user path to see if it's valid or not
+    @Override
     public boolean testPath(List<Instruction> instructions) {
         this.currentPath.clear();
         setUpRunner();
