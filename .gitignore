@@ -16,3 +16,7 @@ target
 
 # MacOS X bs
 .DS_Store
+.project
+.factorypath
+.classpath
+.settings

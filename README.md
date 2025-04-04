@@ -108,4 +108,8 @@ mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straig
 inccorrect path
 mosser@azrael A1-Template %
 ```
-
+### My Notes ~Aidan Heathfield
+- For some reason running the command on my mac makes logger not work, use this:
+```
+java -Dlog4j2.configurationFile=file:src/main/resources/log4j2.xml -jar <USUAL>
+```
