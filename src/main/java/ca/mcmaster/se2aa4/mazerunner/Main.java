@@ -13,7 +13,7 @@ public class Main {
         logger.info("** Starting Maze Runner");
         try {
 
-            RectangleMaze maze = new RectangleMaze(inputManager.getFilePath());
+            Maze<Position, String> maze = new RectangleMaze(inputManager.getFilePath());
 
             Path path = new Path(maze);
             String userPath = inputManager.getUserPath();

@@ -14,7 +14,7 @@ public class Path {
     private String path;
 
     // Contructor
-    public Path(RectangleMaze maze) {
+    public Path(Maze<Position, String> maze) {
         this.runner = new MazeRunner(maze);
         retrievePath(); // Gets path that runner took
     }

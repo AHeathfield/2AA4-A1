@@ -13,7 +13,7 @@ public class InputManagerTests {
     }
 
     @Test
-    public void checkSmallMazeFilePath() {
+    public void checkMazeFilePathParse() {
         String filePath = "examples/small.maz.txt";
         String[] testArgs = buildTestInput(filePath);
         InputManager testInputManager = new InputManager(testArgs);
@@ -21,7 +21,7 @@ public class InputManagerTests {
     }
 
     @Test
-    public void checkSmallMazeUserCanonicalPath() {
+    public void checkUserPathParse() {
         String filePath = "examples/small.maz.txt";
         String userPath = "F R LLLL FFFFF RR FFFF LL F L F L FF";
         String[] testArgs = buildTestInput(filePath, userPath);
