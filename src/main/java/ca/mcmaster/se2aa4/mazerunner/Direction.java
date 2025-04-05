@@ -6,6 +6,33 @@ public enum Direction {
     RIGHT,
     LEFT;
 
+    private Direction rightDirection;
+    private Direction leftDirection;
+
+    // Will happen when class is made to just set up some values
+    static {
+        UP.rightDirection = RIGHT;
+        UP.leftDirection = LEFT;
+
+        DOWN.rightDirection = LEFT;
+        DOWN.leftDirection = RIGHT;
+
+        RIGHT.leftDirection = UP;
+        RIGHT.rightDirection = DOWN;
+
+        LEFT.rightDirection = UP;
+        LEFT.leftDirection = DOWN;
+    }
+
+    public Direction getRightDirection() {
+        return this.rightDirection;
+    }
+
+    public Direction getLeftDirection() {
+        return this.leftDirection;
+    }
+
+
     // Given an angle returns the corresponding direction (similar to factory pattern but not really)
     public static Direction convertAngleToDir(int angle) {
         angle = angle % 360;
