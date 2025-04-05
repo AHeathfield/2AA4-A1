@@ -5,10 +5,10 @@ import org.apache.logging.log4j.Logger;
 
 import ca.mcmaster.se2aa4.mazerunner.*;
 
-public class TurnLeft extends Command {
+public class TurnLeftCommand extends Command {
     private final Logger logger = LogManager.getLogger();
 
-    public TurnLeft(Runner<Direction, Instruction> player) {
+    public TurnLeftCommand(Runner<Direction, Instruction> player) {
         super(player);
     }
 
