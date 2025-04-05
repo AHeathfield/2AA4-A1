@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ca.mcmaster.se2aa4.mazerunner.Commands.MoveForward;
+
 /*
  * This simulates a person running through a maze
  */
@@ -50,10 +52,12 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
     // Runner explores Maze and reports back the exact path they took
     public List<Instruction> exploreMaze() {
+        // Explore Maze
+        executeCommand(new MoveForward(this));
+
         this.currentAngle = Direction.convertDirToAngle(this.currentDir);
         this.currentPath.clear();
         logger.info("**** Computing path");
-
         while (true) {
             // First move in the maze will always be forward to enter the maze
             if (this.currentPath.isEmpty() && isWallInFront()) {
@@ -145,6 +149,10 @@ public class MazeRunner implements Runner<Direction, Instruction> {
         currentPath.add(instruction);
     }
 
+    @Override
+    public void executeCommand(Command command) {
+        command.execute();
+    }
 
      // This updates the current angle of the maze runner (which direction their facing on a normal 
     // xy plane)
