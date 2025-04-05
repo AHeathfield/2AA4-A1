@@ -5,7 +5,7 @@ import java.util.Map;
 /*
  * This is the maze interface
  */
-interface Maze<K, V> {
+public interface Maze<K, V> {
     public Map<K, V> getMazeMap();
 
     public Position getEntryPos();

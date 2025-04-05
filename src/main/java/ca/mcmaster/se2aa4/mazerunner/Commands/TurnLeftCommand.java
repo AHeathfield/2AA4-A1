@@ -8,13 +8,15 @@ import ca.mcmaster.se2aa4.mazerunner.*;
 public class TurnLeftCommand extends Command {
     private final Logger logger = LogManager.getLogger();
 
-    public TurnLeftCommand(Runner<Direction, Instruction> player) {
+    public TurnLeftCommand(Runner player) {
         super(player);
     }
 
     @Override
     public void execute() {
-        logger.info("Turning left!"); 
+        // logger.info("Turning left!"); 
+        Direction leftDir = player.getDirection().getLeftDirection();
+        player.setDirection(leftDir);
     }
 }
 

@@ -1,9 +1,9 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 public abstract class Command {
-    protected Runner<Direction, Instruction> player;
+    protected Runner player;
 
-    public Command(Runner<Direction, Instruction> player) {
+    public Command(Runner player) {
         this.player = player;
     }
 

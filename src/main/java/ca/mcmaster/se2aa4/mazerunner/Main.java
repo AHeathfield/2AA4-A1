@@ -14,13 +14,15 @@ public class Main {
         try {
 
             Maze<Position, String> maze = new RectangleMaze(inputManager.getFilePath());
-
+            
+            //Using Adapter Pattern to get different path formats
             Path path = new Path(maze);
+            PathFormatter canonicalPath = new CanonicalPathAdapter(path);
+            PathFormatter factorizedPath = new FactorizedPathAdapter(path);
+
             String userPath = inputManager.getUserPath();
-            if (userPath == null) {
-                System.out.println("Runner path: " + path.getPath());
-            }
-            else {
+
+            if (userPath != null) {
                 logger.info("Before");
                 if (path.isPathValid(userPath)) {
                     System.out.println("User path given solves maze!");
@@ -28,10 +30,10 @@ public class Main {
                 else {
                     System.out.println("User path given does not solve maze!");
                 }
-                System.out.println("Runner path: " + path.getPath());
             }
-            System.out.println("Runner canoncial path: " + path.getCanonicalPath());
-            System.out.println("Runner factorized path: " + path.getFactorizedPath());
+
+            System.out.println("Runner canoncial path: " + canonicalPath.getPath());
+            System.out.println("Runner factorized path: " + factorizedPath.getPath());
 
         } catch(Exception e) {
             System.err.println(e);

@@ -89,7 +89,6 @@ public class RectangleMaze implements Maze<Position, String> {
         return false;
     }
 
-
     public void testDisplay() {
         int y, x;
         Position pos = new Position();

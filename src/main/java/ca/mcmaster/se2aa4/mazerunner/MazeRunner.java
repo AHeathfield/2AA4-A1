@@ -11,13 +11,13 @@ import ca.mcmaster.se2aa4.mazerunner.Commands.*;
 /*
  * This simulates a person running through a maze
  */
-public class MazeRunner implements Runner<Direction, Instruction> {
+public class MazeRunner implements Runner {
     private static final Logger logger = LogManager.getLogger();
     private Maze<Position, String> maze;
     private Position currentPos;
     private Direction currentDir;
     private int currentAngle;
-    private List<Instruction> currentPath = new ArrayList<>();    // Maybe have the Path control the path
+    private List<Command> currentPath = new ArrayList<>();    // Maybe have the Path control the path
 
 
     // Constructor
@@ -29,15 +29,15 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
     // This is to test the user path to see if it's valid or not
     @Override
-    public boolean testPath(List<Instruction> instructions) {
+    public boolean testPath(List<Command> commands) {
         this.currentPath.clear();
         setUpRunner();
-        for (Instruction instruction : instructions) {
-            if (isWallInFront() &&  instruction == Instruction.FORWARD) {
+        for (Command command : commands) {
+            if (isWallInFront() && command instanceof MoveForwardCommand) {
                 return false;
             }
             else {
-                doInstruction(instruction);
+                executeCommand(command);
             }
         }
 
@@ -51,24 +51,18 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
 
     // Runner explores Maze and reports back the exact path they took
-    public List<Instruction> exploreMaze() {
+    public List<Command> exploreMaze() {
         // Explore Maze
-        // executeCommand(new MoveForwardCommand(this));
-
-        this.currentAngle = Direction.convertDirToAngle(this.currentDir);
         this.currentPath.clear();
         logger.info("**** Computing path");
+        // First move in the maze will always be forward to enter the maze
+        if (this.currentPath.isEmpty() && isWallInFront()) {
+            return this.currentPath;
+        }
+        else {
+            executeCommand(new MoveForwardCommand(this));
+        }
         while (true) {
-            // First move in the maze will always be forward to enter the maze
-            if (this.currentPath.isEmpty() && isWallInFront()) {
-                break;
-            }
-            else if (this.currentPath.isEmpty()) {
-                // doInstruction(Instruction.FORWARD);
-                executeCommand(new MoveForwardCommand(this), Instruction.FORWARD);
-            }
-
-
             // This checks to see if the maze is possible or if the maze has been solved
             if (this.currentPos.equals(this.maze.getEntryPos())) {
                 this.currentPath.clear();   // Empty path indicates impossible maze
@@ -79,39 +73,32 @@ public class MazeRunner implements Runner<Direction, Instruction> {
                 logger.info("Final position (x,y): ({}, {})", this.currentPos.x, this.currentPos.y);
                 break;
             }
-
-            // This part is for getting through the maze
-            // There's only 1 case where its 2 instructions, all other are just 1
-            for (Instruction next : getNextInstructions()) {
-                doInstruction(next);
-            }
+            
+            // Solving Maze...
+            doNextCommands();
         }
+
         return this.currentPath;
     }
 
 
     // This is the logic of keeping right hand on the wall of the maze
-    private ArrayList<Instruction> getNextInstructions() {
-        ArrayList<Instruction> instructions = new ArrayList<>();
+    private void doNextCommands() {
+        // Might not need
+        if (this.currentPos.equals(maze.getExitPos())) {
+            return;
+        }
 
         if (isWallInFront()) {
-            instructions.add(Instruction.LEFT);
+            this.executeCommand(new TurnLeftCommand(this));
+        }
+        else if (this.isWallInFrontRight()) {
+            this.executeCommand(new MoveForwardCommand(this));
         }
         else {
-            
-            if (isWallToRight()) {
-                instructions.add(Instruction.FORWARD);
-            }
-            // Idea is you move forward and then turn RIGHT since there will be no wall
-            // to your right, if we turn LEFT it gives the opportunity of just looping
-            // back and forth.
-            else {
-                instructions.add(Instruction.FORWARD);
-                instructions.add(Instruction.RIGHT);
-            }
+            this.executeCommand(new MoveForwardCommand(this));
+            this.executeCommand(new TurnRightCommand(this));
         }
-        
-        return instructions;
     }
 
     @Override
@@ -138,61 +125,12 @@ public class MazeRunner implements Runner<Direction, Instruction> {
     }
 
 
-    @Override
-    public void doInstruction(Instruction instruction) {
-        this.currentAngle = getNewAngle(instruction);   // Needed to update direciton
-        this.currentDir = Direction.convertAngleToDir(this.currentAngle);
-
-        // Position only changes when instruction to runner is move FORWARD
-        if (instruction == Instruction.FORWARD) {
-            this.currentPos = Position.getForwardPosition(this.currentPos, this.currentDir);
-        }
-        currentPath.add(instruction);
-    }
 
     @Override
-    public void executeCommand(Command command, Instruction instruction) {
+    public void executeCommand(Command command) {
         command.execute();
-        currentPath.add(instruction);
+        currentPath.add(command);
     }
-
-     // This updates the current angle of the maze runner (which direction their facing on a normal 
-    // xy plane)
-    private int getNewAngle(Instruction instruction) {
-        // %360 ensures it will always be between [0, 360)
-        switch (instruction) {
-            case LEFT:
-                return (this.currentAngle + 90) % 360;
-            case RIGHT:
-                return (this.currentAngle + 270) % 360;
-            default:
-                return this.currentAngle;
-        }
-    }
-
-
-    // Gets the position in front of the position given based on the direction given
-    // private Position getForwardPos(Position position, Direction direction) {
-    //     Position pos = position.deepCopy();
-    //     switch (direction) {
-    //         case Direction.UP:
-    //             pos.y -= 1;
-    //             break;
-    //         case Direction.DOWN:
-    //             pos.y += 1;
-    //             break;
-    //         case Direction.RIGHT:
-    //             pos.x += 1;
-    //             break;
-    //         case Direction.LEFT:
-    //             pos.x -= 1;
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    //     
-    //     return pos;
-    // }
 
 
     // Checks to see if there's a wall in front of runner CURRENT POS
@@ -203,14 +141,11 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
 
     // Checks to see if there's a wall to the right IF THEY WERE TO MOVE FORWARD
-    private boolean isWallToRight() {
+    private boolean isWallInFrontRight() {
         Position runnerPosForward = Position.getForwardPosition(this.currentPos, this.currentDir);
+        Position posToFrontRight = Position.getForwardPosition(runnerPosForward, this.currentDir.getRightDirection());
 
-        int angleToRight = getNewAngle(Instruction.RIGHT);
-        Direction playerRight = Direction.convertAngleToDir(angleToRight);
-        Position posToRight = Position.getForwardPosition(runnerPosForward, playerRight);
-
-        return this.maze.isWallAtPos(posToRight);
+        return this.maze.isWallAtPos(posToFrontRight);
     }
 
 
