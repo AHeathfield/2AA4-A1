@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ca.mcmaster.se2aa4.mazerunner.Commands.MoveForward;
+import ca.mcmaster.se2aa4.mazerunner.Commands.*;
 
 /*
  * This simulates a person running through a maze
@@ -53,7 +53,7 @@ public class MazeRunner implements Runner<Direction, Instruction> {
     // Runner explores Maze and reports back the exact path they took
     public List<Instruction> exploreMaze() {
         // Explore Maze
-        executeCommand(new MoveForward(this));
+        // executeCommand(new MoveForwardCommand(this));
 
         this.currentAngle = Direction.convertDirToAngle(this.currentDir);
         this.currentPath.clear();
@@ -64,7 +64,8 @@ public class MazeRunner implements Runner<Direction, Instruction> {
                 break;
             }
             else if (this.currentPath.isEmpty()) {
-                doInstruction(Instruction.FORWARD);
+                // doInstruction(Instruction.FORWARD);
+                executeCommand(new MoveForwardCommand(this), Instruction.FORWARD);
             }
 
 
@@ -144,14 +145,15 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
         // Position only changes when instruction to runner is move FORWARD
         if (instruction == Instruction.FORWARD) {
-            this.currentPos = getForwardPos(this.currentPos, this.currentDir);
+            this.currentPos = Position.getForwardPosition(this.currentPos, this.currentDir);
         }
         currentPath.add(instruction);
     }
 
     @Override
-    public void executeCommand(Command command) {
+    public void executeCommand(Command command, Instruction instruction) {
         command.execute();
+        currentPath.add(instruction);
     }
 
      // This updates the current angle of the maze runner (which direction their facing on a normal 
@@ -170,43 +172,43 @@ public class MazeRunner implements Runner<Direction, Instruction> {
 
 
     // Gets the position in front of the position given based on the direction given
-    private Position getForwardPos(Position position, Direction direction) {
-        Position pos = position.deepCopy();
-        switch (direction) {
-            case Direction.UP:
-                pos.y -= 1;
-                break;
-            case Direction.DOWN:
-                pos.y += 1;
-                break;
-            case Direction.RIGHT:
-                pos.x += 1;
-                break;
-            case Direction.LEFT:
-                pos.x -= 1;
-                break;
-            default:
-                break;
-        }
-        
-        return pos;
-    }
+    // private Position getForwardPos(Position position, Direction direction) {
+    //     Position pos = position.deepCopy();
+    //     switch (direction) {
+    //         case Direction.UP:
+    //             pos.y -= 1;
+    //             break;
+    //         case Direction.DOWN:
+    //             pos.y += 1;
+    //             break;
+    //         case Direction.RIGHT:
+    //             pos.x += 1;
+    //             break;
+    //         case Direction.LEFT:
+    //             pos.x -= 1;
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    //     
+    //     return pos;
+    // }
 
 
     // Checks to see if there's a wall in front of runner CURRENT POS
     private boolean isWallInFront() {
-        Position posInFront = getForwardPos(this.currentPos, this.currentDir);
+        Position posInFront = Position.getForwardPosition(this.currentPos, this.currentDir);
         return this.maze.isWallAtPos(posInFront);
     }
 
 
     // Checks to see if there's a wall to the right IF THEY WERE TO MOVE FORWARD
     private boolean isWallToRight() {
-        Position runnerPosForward = getForwardPos(this.currentPos, this.currentDir);
+        Position runnerPosForward = Position.getForwardPosition(this.currentPos, this.currentDir);
 
         int angleToRight = getNewAngle(Instruction.RIGHT);
         Direction playerRight = Direction.convertAngleToDir(angleToRight);
-        Position posToRight = getForwardPos(runnerPosForward, playerRight);
+        Position posToRight = Position.getForwardPosition(runnerPosForward, playerRight);
 
         return this.maze.isWallAtPos(posToRight);
     }

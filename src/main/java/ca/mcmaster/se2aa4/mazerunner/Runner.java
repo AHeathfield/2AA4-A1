@@ -14,7 +14,7 @@ public interface Runner<D, I> {
     public void setPosition(Position position);
 
     public void doInstruction(I instruciton); // Plan to remove this
-    public void executeCommand(Command command);
+    public void executeCommand(Command command, I instruction);
 
     public List<I> exploreMaze();
     public boolean testPath(List<I> instructions);

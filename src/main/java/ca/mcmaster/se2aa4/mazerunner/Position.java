@@ -52,4 +52,28 @@ public class Position {
     public Position deepCopy() {
         return new Position(this.x, this.y);
     }
+
+    // Might make this not static
+    public static Position getForwardPosition(Position position, Direction direction) {
+        Position pos = position.deepCopy();
+        switch (direction) {
+            case Direction.UP:
+                pos.y -= 1;
+                break;
+            case Direction.DOWN:
+                pos.y += 1;
+                break;
+            case Direction.RIGHT:
+                pos.x += 1;
+                break;
+            case Direction.LEFT:
+                pos.x -= 1;
+                break;
+            default:
+                break;
+        }
+        
+        return pos;
+    }
+
 }

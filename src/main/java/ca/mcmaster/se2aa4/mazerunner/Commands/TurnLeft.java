@@ -1,4 +1,3 @@
-
 package ca.mcmaster.se2aa4.mazerunner.Commands;
 
 import org.apache.logging.log4j.LogManager;
